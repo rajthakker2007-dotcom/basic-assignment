@@ -599,28 +599,23 @@ form.addEventListener('submit', async (e) => {
     feedback: document.querySelector('[name="feedback"]').value
   };
 
-  console.log("Submitting:", formData); // debug
+  console.log("Sending:", formData);
 
   try {
-    await fetch("https://script.google.com/macros/s/AKfycbyozsBeoYQ3YJM2iH6n3Eh3iac0dDTTPDmZHXUtQZuo9FOIPKnMG-wo-YaBmz5z5iC8/exec", {
+    await fetch("https://script.google.com/macros/s/AKfycbxIOqTeuq4pSpqTa9mgz-mC_UvHQn23nqGGK0d9cTLMNJFzUHorsMgueI2lLJvZAS92wA/exec", {
       method: "POST",
-      mode: "no-cors", // VERY IMPORTANT
-      headers: {
-        "Content-Type": "application/json"
-      },
+      mode: "no-cors",
       body: JSON.stringify(formData)
     });
 
     alert("Submitted successfully 🔥");
+    form.reset();
 
-    form.reset(); // optional reset
-
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Error submitting form ❌");
+  } catch (err) {
+    console.error(err);
+    alert("Error ❌");
   }
 });
-
 
 
       // Loading state
