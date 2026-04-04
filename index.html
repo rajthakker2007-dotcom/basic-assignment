@@ -626,7 +626,7 @@ form.addEventListener("submit", async function (e) {
       submitBtn.classList.add('loading');
 
       try {
-        const res = await fetch(APPS_SCRIPT_URL, {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbxIOqTeuq4pSpqTa9mgz-mC_UvHQn23nqGGK0d9cTLMNJFzUHorsMgueI2lLJvZAS92wA/exec", {
           method:  'POST',
           headers: { 'Content-Type': 'text/plain' },
           body:    JSON.stringify(payload),
