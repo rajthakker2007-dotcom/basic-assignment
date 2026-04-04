@@ -1,71 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
   <title>Feedback Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      padding: 30px;
+      border-radius: 16px;
+      width: 350px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #cbd5e1;
+    }
+
+    select {
+      color: white;
+    }
+
+    textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #22c55e, #06b6d4);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+      opacity: 0.9;
+    }
+
+    .success {
+      display: none;
+      text-align: center;
+      margin-top: 10px;
+      color: #22c55e;
+      font-weight: 500;
+    }
+
+  </style>
 </head>
+
 <body>
 
-  <h2>Feedback Form</h2>
+  <div class="card">
+    <h2>💬 Feedback</h2>
 
-  <!-- ✅ NO action / NO method -->
-  <form id="feedback-form">
+    <form id="feedback-form">
+      <input name="firstName" placeholder="First Name" required>
+      <input name="lastName" placeholder="Last Name">
 
-  <input name="firstName" placeholder="First Name" required><br><br>
+      <input name="email" type="email" placeholder="Email" required>
 
-  <input name="lastName" placeholder="Last Name" required><br><br>
+      <select name="category">
+        <option value="">Select Category</option>
+        <option value="Feedback">Feedback</option>
+        <option value="Support">Support</option>
+      </select>
 
-  <input name="email" type="email" placeholder="Email" required><br><br>
+      <input name="rating" placeholder="Rating (1-5)">
 
-  <select name="category" required>
-    <option value="">Select Category</option>
-    <option value="Support">Support</option>
-    <option value="Bug">Bug</option>
-  </select><br><br>
+      <textarea name="feedback" placeholder="Your feedback"></textarea>
 
-  <input name="rating" placeholder="Rating (1-5)"><br><br>
+      <button type="submit">Send Feedback 🚀</button>
+    </form>
 
-  <textarea name="feedback" placeholder="Your feedback"></textarea><br><br>
-
-  <button type="submit">Submit</button>
-
-</form>
+    <div class="success" id="success-msg">
+      ✅ Submitted successfully!
+    </div>
+  </div>
 
   <script>
     const form = document.getElementById("feedback-form");
-    const scriptUrl = "https://script.google.com/macros/s/AKfycbxIOqTeuq4pSpqTa9mgz-mC_UvHQn23nqGGK0d9cTLMNJFzUHorsMgueI2lLJvZAS92wA/exec";
+    const successMsg = document.getElementById("success-msg");
 
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
-      const rating = Number.parseInt(data.rating, 10);
-
-      if (data.rating && (!Number.isInteger(rating) || rating < 1 || rating > 5)) {
-        alert("Please enter a rating from 1 to 5.");
-        return;
-      }
-
-      console.log("Sending:", data);
+      const payload = {
+        firstName: form.firstName.value,
+        lastName: form.lastName.value,
+        email: form.email.value,
+        category: form.category.value,
+        rating: form.rating.value,
+        feedback: form.feedback.value
+      };
 
       try {
-        await fetch(scriptUrl, {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbxIOqTeuq4pSpqTa9mgz-mC_UvHQn23nqGGK0d9cTLMNJFzUHorsMgueI2lLJvZAS92wA/exec", {
           method: "POST",
-          mode: "no-cors",
-          body: JSON.stringify({
-            ...data,
-            rating: data.rating ? rating : ""
-          })
+          headers: {
+            "Content-Type": "text/plain"
+          },
+          body: JSON.stringify(payload)
         });
 
-        alert("Submitted successfully.");
-        form.reset();
+        const data = await res.json();
 
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Something went wrong.");
+        if (data.result === "success") {
+          form.reset();
+          successMsg.style.display = "block";
+        }
+
+      } catch (err) {
+        alert("Error submitting form");
+        console.error(err);
       }
     });
   </script>
