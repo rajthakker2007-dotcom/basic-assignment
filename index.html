@@ -586,12 +586,13 @@
 
 
 
+
 const form = document.getElementById("feedback-form");
 
 form.addEventListener("submit", async function (e) {
-  e.preventDefault();
+  e.preventDefault(); // 🔥 IMPORTANT
 
-  const data = {
+  const payload = {
     firstName: form.firstName.value,
     lastName: form.lastName.value,
     email: form.email.value,
@@ -600,23 +601,24 @@ form.addEventListener("submit", async function (e) {
     feedback: form.feedback.value
   };
 
-  console.log("Sending:", data);
+  console.log("Sending:", payload);
 
   try {
     const res = await fetch("https://script.google.com/macros/s/AKfycbxIOqTeuq4pSpqTa9mgz-mC_UvHQn23nqGGK0d9cTLMNJFzUHorsMgueI2lLJvZAS92wA/exec", {
       method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify(data)
+      mode: "no-cors", // 🔥 important for Google Apps Script
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     });
 
-    console.log("Response:", res);
-    alert("Submitted successfully 🔥");
-
+    alert("Submitted successfully 🚀");
     form.reset();
 
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Something went wrong ❌");
+  } catch (err) {
+    console.error(err);
+    alert("Error ❌");
   }
 });
 
