@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feedback Form</title>
 </head>
 <body>
@@ -33,34 +34,38 @@
 
   <script>
     const form = document.getElementById("feedback-form");
+    const scriptUrl = "https://script.google.com/macros/s/AKfycbxIOqTeuq4pSpqTa9mgz-mC_UvHQn23nqGGK0d9cTLMNJFzUHorsMgueI2lLJvZAS92wA/exec";
 
     form.addEventListener("submit", async function (e) {
-      e.preventDefault(); // 🔥 STOP PAGE RELOAD
+      e.preventDefault();
 
-      const data = {
-        firstName: form.firstName.value,
-        lastName: form.lastName.value,
-        email: form.email.value,
-        category: form.category.value,
-        rating: form.rating.value,
-        feedback: form.feedback.value
-      };
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      const rating = Number.parseInt(data.rating, 10);
+
+      if (data.rating && (!Number.isInteger(rating) || rating < 1 || rating > 5)) {
+        alert("Please enter a rating from 1 to 5.");
+        return;
+      }
 
       console.log("Sending:", data);
 
       try {
-        await fetch("https://script.google.com/macros/s/AKfycbxIOqTeuq4pSpqTa9mgz-mC_UvHQn23nqGGK0d9cTLMNJFzUHorsMgueI2lLJvZAS92wA/exec", {
+        await fetch(scriptUrl, {
           method: "POST",
-          mode: "no-cors", // 🔥 REQUIRED
-          body: JSON.stringify(data)
+          mode: "no-cors",
+          body: JSON.stringify({
+            ...data,
+            rating: data.rating ? rating : ""
+          })
         });
 
-        alert("Submitted successfully 🚀");
+        alert("Submitted successfully.");
         form.reset();
 
       } catch (error) {
         console.error("Error:", error);
-        alert("Something went wrong ❌");
+        alert("Something went wrong.");
       }
     });
   </script>
