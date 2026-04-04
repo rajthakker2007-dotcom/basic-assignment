@@ -584,6 +584,9 @@
 
 
 
+
+
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -597,15 +600,15 @@ form.addEventListener('submit', async (e) => {
   };
 
   try {
-    const res = await fetch("https://script.google.com/macros/s/AKfycbwaPa-qkeSb27J4AWSowOoYjSu4RGxMyrQacpXOkKVbDZbTepu8FWBMJp3XgLP4s-4/exec", {
+    await fetch("https://script.google.com/macros/s/AKfycbwaPa-qkeSb27J4AWSowOoYjSu4RGxMyrQacpXOkKVbDZbTepu8FWBMJp3XgLP4s-4/exec", {
       method: "POST",
+      mode: "no-cors",   // 🔥 IMPORTANT
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(formData)
     });
 
-    const data = await res.json();
     alert("Submitted successfully 🔥");
 
   } catch (err) {
@@ -613,6 +616,7 @@ form.addEventListener('submit', async (e) => {
     alert("Error submitting form ❌");
   }
 });
+
 
 
       // Loading state
