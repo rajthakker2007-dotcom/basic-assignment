@@ -602,11 +602,9 @@ form.addEventListener('submit', async (e) => {
   try {
     const res = await fetch("https://script.google.com/macros/s/AKfycbyozsBeoYQ3YJM2iH6n3Eh3iac0dDTTPDmZHXUtQZuo9FOIPKnMG-wo-YaBmz5z5iC8/exec", {
       method: "POST",
-      body: JSON.stringify(formData)
+      body: JSON.stringify(formData),
+      mode: "no-cors"   // 🔥 ADD THIS
     });
-
-    const data = await res.json();
-    console.log(data);
 
     alert("Submitted successfully 🚀");
 
