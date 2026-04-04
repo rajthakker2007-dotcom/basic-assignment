@@ -10,23 +10,26 @@
 
   <!-- ✅ NO action / NO method -->
   <form id="feedback-form">
-    <input type="text" name="firstName" placeholder="First Name" required><br><br>
-    <input type="text" name="lastName" placeholder="Last Name" required><br><br>
-    <input type="email" name="email" placeholder="Email" required><br><br>
 
-    <select name="category" required>
-      <option value="">Select Category</option>
-      <option value="Support">Support</option>
-      <option value="Bug">Bug</option>
-      <option value="Feedback">Feedback</option>
-    </select><br><br>
+  <input name="firstName" placeholder="First Name" required><br><br>
 
-    <input type="number" name="rating" placeholder="Rating (1-5)" required><br><br>
+  <input name="lastName" placeholder="Last Name" required><br><br>
 
-    <textarea name="feedback" placeholder="Your feedback" required></textarea><br><br>
+  <input name="email" type="email" placeholder="Email" required><br><br>
 
-    <button type="submit">Submit</button>
-  </form>
+  <select name="category" required>
+    <option value="">Select Category</option>
+    <option value="Support">Support</option>
+    <option value="Bug">Bug</option>
+  </select><br><br>
+
+  <input name="rating" placeholder="Rating (1-5)"><br><br>
+
+  <textarea name="feedback" placeholder="Your feedback"></textarea><br><br>
+
+  <button type="submit">Submit</button>
+
+</form>
 
   <script>
     const form = document.getElementById("feedback-form");
