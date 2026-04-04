@@ -502,7 +502,6 @@
     const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
     // ────────────────────────────────────────────────────────
 
-    const form       = document.getElementById('feedback-form');
     const submitBtn  = document.getElementById('submit-btn');
     const successView= document.getElementById('success-view');
     const resetBtn   = document.getElementById('reset-btn');
@@ -587,33 +586,37 @@
 
 
 
-form.addEventListener('submit', async (e) => {
+const form = document.getElementById("feedback-form");
+
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  const formData = {
-    firstName: document.querySelector('[name="firstName"]').value,
-    lastName: document.querySelector('[name="lastName"]').value,
-    email: document.querySelector('[name="email"]').value,
-    category: document.querySelector('[name="category"]').value,
-    rating: document.querySelector('[name="rating"]').value,
-    feedback: document.querySelector('[name="feedback"]').value
+  const data = {
+    firstName: form.firstName.value,
+    lastName: form.lastName.value,
+    email: form.email.value,
+    category: form.category.value,
+    rating: form.rating.value,
+    feedback: form.feedback.value
   };
 
-  console.log("Sending:", formData);
+  console.log("Sending:", data);
 
   try {
-    await fetch("https://script.google.com/macros/s/AKfycbxIOqTeuq4pSpqTa9mgz-mC_UvHQn23nqGGK0d9cTLMNJFzUHorsMgueI2lLJvZAS92wA/exec", {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbxIOqTeuq4pSpqTa9mgz-mC_UvHQn23nqGGK0d9cTLMNJFzUHorsMgueI2lLJvZAS92wA/exec", {
       method: "POST",
       mode: "no-cors",
-      body: JSON.stringify(formData)
+      body: JSON.stringify(data)
     });
 
+    console.log("Response:", res);
     alert("Submitted successfully 🔥");
+
     form.reset();
 
-  } catch (err) {
-    console.error(err);
-    alert("Error ❌");
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Something went wrong ❌");
   }
 });
 
