@@ -73,7 +73,7 @@ button:hover {
   border: none;
 
   background: #000000;  /* ✅ WHITE BG */
-  color: #ffffff;          /* ✅ BLACK TEXT */
+  color: #000000;          /* ✅ BLACK TEXT */
 
   min-width: 200px;     /* 🔥 prevent collapse */
 }
@@ -196,31 +196,39 @@ async function searchUser() {
   const name = document.getElementById("searchName").value.trim();
   const container = document.getElementById("data-container");
 
-  container.innerHTML = ""; // 🔥 CLEAR EVERYTHING FIRST
+  container.innerHTML = "";
 
   if (!name) {
     container.innerHTML = "<p style='color:red;'>Enter a name</p>";
     return;
   }
 
-  const res = await fetch(`YOUR_API_URL?name=${name}`);
-  const data = await res.json();
+  try {
+    const res = await fetch(`${API_URL}?name=${name}`);
+    const data = await res.json();
 
-  if (data.length === 0) {
-    container.innerHTML = "<p style='color:red;'>❌ No user found</p>";
-    return;
+    console.log("DATA:", data); // 🔥 check this in console
+
+    if (data.length === 0) {
+      container.innerHTML = "<p style='color:red;'>❌ No user found</p>";
+      return;
+    }
+
+    data.forEach(item => {
+      container.innerHTML += `
+        <div class="data-card">
+          <h3>${item.firstName} ${item.lastName}</h3>
+          <p>📧 ${item.email}</p>
+          <p>📂 ${item.category} | ⭐ ${item.rating}</p>
+          <p>💬 ${item.feedback}</p>
+        </div>
+      `;
+    });
+
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = "<p style='color:red;'>Error fetching data</p>";
   }
-
-  data.forEach(item => {
-    container.innerHTML += `
-      <div class="data-card">
-        <h3>${item.firstName} ${item.lastName}</h3>
-        <p>📧 ${item.email}</p>
-        <p>📂 ${item.category} | ⭐ ${item.rating}</p>
-        <p>💬 ${item.feedback}</p>
-      </div>
-    `;
-  });
 }
 
 // DISPLAY FUNCTION
