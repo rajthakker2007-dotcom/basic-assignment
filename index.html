@@ -132,12 +132,12 @@ form.addEventListener("submit", async (e) => {
 
 await fetch(API_URL, {
   method: "POST",
-  mode: "no-cors",   // 🔥 THIS FIXES ERROR
+  mode: "no-cors",   // 🔥 MUST ADD THIS
   body: JSON.stringify(payload)
 });
 
-  successMsg.innerText = "✅ Submitted successfully!";
-  form.reset();
+  successMsg.innerText = "✅ Submitted!";
+form.reset();
 });
 
 /* SEARCH USER */
