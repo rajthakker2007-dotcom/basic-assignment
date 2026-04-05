@@ -8,102 +8,88 @@
 
 <style>
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #0f172a;
+  margin: 0;
+  font-family: 'Segoe UI';
+  background: linear-gradient(135deg, #020617, #0f172a);
   color: white;
   display: flex;
   justify-content: center;
-  padding: 40px;
 }
 
 .container {
-  width: 400px;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
 }
 
 .card {
   background: #1e293b;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-input, select, textarea {
-  width: 100%;
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 8px;
+/* SEARCH BOX */
+.search-box {
+  display: flex;
+  gap: 10px;
+  margin: 25px 0;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 14px;
+  border-radius: 10px;
   border: none;
+  font-size: 16px;
+  background: #111827;
+  color: white;
 }
 
-button {
-  width: 100%;
-  padding: 12px;
+.search-box input::placeholder {
+  color: #888;
+}
+
+.search-box button {
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: none;
   background: #22c55e;
   color: white;
-  border: none;
-  border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
 }
 
-button:hover {
-  background: #16a34a;
-}
-
-.success {
-  color: #22c55e;
-  margin-top: 10px;
-  display: none;
-}
-
-.search-box {
-  margin-top: 25px;
+/* DATA LIST */
+#data-list {
+  margin-top: 20px;
   display: flex;
-  gap: 10px;
-  width: 100%;
+  flex-direction: column;
+  gap: 15px;
 }
 
-/* 🚀 FIXED INPUT */
-.search-box input {
-  flex: 1;              /* 🔥 THIS WAS MISSING */
-  width: 100%;          /* 🔥 force full width */
-  padding: 14px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: none;
-
-  background: #ffffff;  /* ✅ WHITE BG */
-  color: #000000;          /* ✅ BLACK TEXT */
-
-  min-width: 200px;     /* 🔥 prevent collapse */
-}
-
-/* placeholder */
-.search-box input::placeholder {
-  color: #666;
-}
-
-/* button */
-.search-box button {
-  padding: 14px 20px;
-  font-size: 16px;
-  border-radius: 10px;
-  border: none;
-  background: #22c55e;
-  color: white;
-  cursor: pointer;
-}
-
-/* focus */
-.search-box input:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #22c55e;
-}
+/* CARDS */
 .data-card {
   background: #1e293b;
-  padding: 12px;
-  border-radius: 10px;
-  margin-top: 10px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  transition: 0.2s;
+}
+
+.data-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.4);
+}
+
+.data-card h3 {
+  margin: 0 0 6px;
+}
+
+.data-card p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #cbd5e1;
 }
 </style>
 </head>
