@@ -192,9 +192,13 @@ async function loadData() {
 }
 
 // SEARCH USER
+const API_URL = "https://script.google.com/macros/s/AKfycbyozsBeoYQ3YJM2iH6n3Eh3iac0dDTTPDmZHXUtQZuo9FOIPKnMG-wo-YaBmz5z5iC8/exec";
+
 async function searchUser() {
   const name = document.getElementById("searchName").value.trim();
   const container = document.getElementById("data-container");
+
+  console.log("Searching for:", name);
 
   container.innerHTML = "";
 
@@ -203,32 +207,27 @@ async function searchUser() {
     return;
   }
 
-  try {
-    const res = await fetch(`${API_URL}?name=${name}`);
-    const data = await res.json();
+  const res = await fetch(`${API_URL}?name=${name}`);
+  const data = await res.json();
 
-    console.log("DATA:", data); // 🔥 check this in console
+  console.log("API DATA:", data);
 
-    if (data.length === 0) {
-      container.innerHTML = "<p style='color:red;'>❌ No user found</p>";
-      return;
-    }
-
-    data.forEach(item => {
-      container.innerHTML += `
-        <div class="data-card">
-          <h3>${item.firstName} ${item.lastName}</h3>
-          <p>📧 ${item.email}</p>
-          <p>📂 ${item.category} | ⭐ ${item.rating}</p>
-          <p>💬 ${item.feedback}</p>
-        </div>
-      `;
-    });
-
-  } catch (err) {
-    console.error(err);
-    container.innerHTML = "<p style='color:red;'>Error fetching data</p>";
+  if (!data || data.length === 0) {
+    container.innerHTML = "<p style='color:red;'>❌ No user found</p>";
+    return;
   }
+
+  data.forEach(item => {
+    const card = `
+      <div class="data-card">
+        <h3>${item.firstName} ${item.lastName}</h3>
+        <p>📧 ${item.email}</p>
+        <p>📂 ${item.category} | ⭐ ${item.rating}</p>
+        <p>💬 ${item.feedback}</p>
+      </div>
+    `;
+    container.innerHTML += card;
+  });
 }
 
 // DISPLAY FUNCTION
