@@ -194,17 +194,17 @@ async function loadData() {
 // SEARCH USER
 async function searchUser() {
   const name = document.getElementById("searchName").value.trim();
+  const container = document.getElementById("data-container");
+
+  container.innerHTML = ""; // 🔥 CLEAR EVERYTHING FIRST
 
   if (!name) {
-    alert("Enter a name bro 😭");
+    container.innerHTML = "<p style='color:red;'>Enter a name</p>";
     return;
   }
 
   const res = await fetch(`YOUR_API_URL?name=${name}`);
   const data = await res.json();
-
-  const container = document.getElementById("data-container");
-  container.innerHTML = ""; // clear old data
 
   if (data.length === 0) {
     container.innerHTML = "<p style='color:red;'>❌ No user found</p>";
