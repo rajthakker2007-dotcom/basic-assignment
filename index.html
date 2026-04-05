@@ -3,99 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <title>Feedback Form</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
     body {
-      background: linear-gradient(135deg, #0f172a, #1e293b);
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
       color: white;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      padding: 40px;
     }
 
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(15px);
-      padding: 30px;
-      border-radius: 16px;
-      width: 350px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    .container {
+      width: 400px;
     }
 
     h2 {
       text-align: center;
       margin-bottom: 20px;
-      font-weight: 600;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 10px;
     }
 
     input, select, textarea {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
-      border-radius: 8px;
+      border-radius: 6px;
       border: none;
       outline: none;
-      background: rgba(255,255,255,0.1);
-      color: white;
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-      color: #cbd5e1;
-    }
-
-    select {
-      color: white;
-    }
-
-    textarea {
-      resize: none;
-      height: 80px;
     }
 
     button {
       width: 100%;
-      padding: 12px;
-      margin-top: 12px;
+      padding: 10px;
+      background: #22c55e;
       border: none;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #22c55e, #06b6d4);
+      border-radius: 6px;
       color: white;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.3s;
     }
 
     button:hover {
-      transform: scale(1.03);
-      opacity: 0.9;
+      background: #16a34a;
     }
 
     .success {
       display: none;
-      text-align: center;
-      margin-top: 10px;
       color: #22c55e;
-      font-weight: 500;
+      margin-top: 10px;
+      text-align: center;
     }
 
+    .data-card {
+      background: #1e293b;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
-    <h2>💬 Feedback</h2>
+<div class="container">
+  <h2>🚀 Feedback Form</h2>
 
+  <div class="card">
     <form id="feedback-form">
       <input name="firstName" placeholder="First Name" required>
       <input name="lastName" placeholder="Last Name">
@@ -104,12 +83,11 @@
 
       <select name="category">
         <option value="">Select Category</option>
-        <option value="support">support</option>
-        <option value="bug">bug</option>
+        <option value="Support">Support</option>
+        <option value="Bug">Bug</option>
       </select>
 
       <input name="rating" placeholder="Rating (1-5)">
-
       <textarea name="feedback" placeholder="Your feedback"></textarea>
 
       <button type="submit">Send Feedback 🚀</button>
@@ -120,44 +98,68 @@
     </div>
   </div>
 
-  <script>
-    const form = document.getElementById("feedback-form");
-    const successMsg = document.getElementById("success-msg");
+  <h3 style="margin-top:20px;">📊 Submitted Feedback</h3>
+  <div id="data-container"></div>
+</div>
 
-    form.addEventListener("submit", async function (e) {
-      e.preventDefault();
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxIOqTeuq4pSpqTa9mgz-mC_UvHQn23nqGGK0d9cTLMNJFzUHorsMgueI2lLJvZAS92wA/exec";
 
-      const payload = {
-        firstName: form.firstName.value,
-        lastName: form.lastName.value,
-        email: form.email.value,
-        category: form.category.value,
-        rating: form.rating.value,
-        feedback: form.feedback.value
-      };
+const form = document.getElementById("feedback-form");
+const successMsg = document.getElementById("success-msg");
+const container = document.getElementById("data-container");
 
-      try {
-        const res = await fetch("https://script.google.com/macros/s/AKfycbxIOqTeuq4pSpqTa9mgz-mC_UvHQn23nqGGK0d9cTLMNJFzUHorsMgueI2lLJvZAS92wA/exec", {
-          method: "POST",
-          headers: {
-            "Content-Type": "text/plain"
-          },
-          body: JSON.stringify(payload)
-        });
+// 🔥 SUBMIT FORM
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-        const data = await res.json();
+  const formData = new FormData(form);
+  const payload = Object.fromEntries(formData.entries());
 
-        if (data.result === "success") {
-          form.reset();
-          successMsg.style.display = "block";
-        }
-
-      } catch (err) {
-        alert("Error submitting form");
-        console.error(err);
-      }
+  try {
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(payload),
     });
-  </script>
+
+    successMsg.style.display = "block";
+    form.reset();
+
+    loadData(); // refresh data
+
+  } catch (err) {
+    alert("Error ❌");
+    console.error(err);
+  }
+});
+
+// 🔥 LOAD DATA FROM SHEET
+async function loadData() {
+  try {
+    const res = await fetch(SCRIPT_URL);
+    const data = await res.json();
+
+    container.innerHTML = "";
+
+    data.reverse().forEach(item => {
+      container.innerHTML += `
+        <div class="data-card">
+          <strong>${item.firstName || ""} ${item.lastName || ""}</strong><br>
+          📧 ${item.email || ""}<br>
+          ⭐ ${item.rating || ""}<br>
+          💬 ${item.feedback || ""}
+        </div>
+      `;
+    });
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// 🚀 LOAD ON START
+loadData();
+</script>
 
 </body>
 </html>
