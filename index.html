@@ -76,53 +76,20 @@ body {
   border: 1px solid #334155;
   transition: 0.2s;
 }
-.section-title {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  font-size: 18px;
-  color: #e2e8f0;
-}
+
 .data-card:hover {
-  border-color: #22c55e;
-  transform: scale(1.02);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.4);
 }
 
 .data-card h3 {
   margin: 0 0 6px;
 }
 
-.section-title {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  font-size: 18px;
-  color: #e2e8f0;
-}
-
-/* MAIN DATA BOX */
-.data-container {
-  background: #0f172a;
-  border: 1px solid #334155;
-  border-radius: 12px;
-  padding: 15px;
-  margin-top: 10px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-/* EACH CARD */
-.data-card {
-  background: #1e293b;
-  padding: 15px;
-  border-radius: 10px;
-  border: 1px solid #475569;
-
-  transition: 0.2s;
-}
-
-.data-card:hover {
-  border-color: #22c55e;
-  transform: scale(1.02);
+.data-card p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #cbd5e1;
 }
 </style>
 </head>
@@ -163,9 +130,10 @@ body {
   <button onclick="searchUser()">Search 🔍</button>
 </div>
 
-<h3 class="section-title">📊 Submitted Feedback</h3>
+<h3>📊 Submitted Feedback</h3>
+<div id="data-list"></div>
 
-<div id="data-list" class="data-container"></div>
+</div>
 
 <script>
 
