@@ -73,7 +73,7 @@ button:hover {
   border: none;
 
   background: #ffffff;  /* ✅ WHITE BG */
-  color: #000;          /* ✅ BLACK TEXT */
+  color: #ffffff;          /* ✅ BLACK TEXT */
 
   min-width: 200px;     /* 🔥 prevent collapse */
 }
@@ -193,26 +193,34 @@ async function loadData() {
 
 // SEARCH USER
 async function searchUser() {
-  const name = document.getElementById("searchName").value.toLowerCase();
+  const name = document.getElementById("searchName").value.trim();
 
-  try {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-
-    const filtered = data.filter(item =>
-      item.firstName.toLowerCase().includes(name)
-    );
-
-    if (filtered.length === 0) {
-      document.getElementById("data-list").innerHTML = "❌ No user found";
-      return;
-    }
-
-    displayData(filtered);
-
-  } catch (err) {
-    console.error(err);
+  if (!name) {
+    alert("Enter a name bro 😭");
+    return;
   }
+
+  const res = await fetch(`YOUR_API_URL?name=${name}`);
+  const data = await res.json();
+
+  const container = document.getElementById("data-container");
+  container.innerHTML = ""; // clear old data
+
+  if (data.length === 0) {
+    container.innerHTML = "<p style='color:red;'>❌ No user found</p>";
+    return;
+  }
+
+  data.forEach(item => {
+    container.innerHTML += `
+      <div class="data-card">
+        <h3>${item.firstName} ${item.lastName}</h3>
+        <p>📧 ${item.email}</p>
+        <p>📂 ${item.category} | ⭐ ${item.rating}</p>
+        <p>💬 ${item.feedback}</p>
+      </div>
+    `;
+  });
 }
 
 // DISPLAY FUNCTION
@@ -236,7 +244,7 @@ function displayData(data) {
 }
 
 // LOAD DATA ON START
-loadData();
+
 </script>
 
 </body>
