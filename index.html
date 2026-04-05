@@ -64,6 +64,19 @@ button:hover {
 
 .search-box input {
   flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+}
+
+.search-box button {
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: #22c55e;
+  color: white;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .data-card {
@@ -105,8 +118,9 @@ button:hover {
 </div>
 
 <!-- SEARCH -->
+
 <div class="search-box">
-  <input id="searchName" placeholder="Search by First Name...">
+  <input id="searchName" placeholder="Enter First Name..." />
   <button onclick="searchUser()">Search 🔍</button>
 </div>
 
