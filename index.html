@@ -1,115 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Feedback Form</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0f172a;
-      color: white;
-      display: flex;
-      justify-content: center;
-      padding: 40px;
-    }
+<title>Feedback Form</title>
 
-    .container {
-      width: 400px;
-    }
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+.container {
+  width: 400px;
+}
 
-    .card {
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 10px;
-    }
+.card {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
 
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 6px;
-      border: none;
-      outline: none;
-    }
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: none;
+}
 
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #22c55e;
-      border: none;
-      border-radius: 6px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
+button {
+  width: 100%;
+  padding: 12px;
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    button:hover {
-      background: #16a34a;
-    }
+button:hover {
+  background: #16a34a;
+}
 
-    .success {
-      display: none;
-      color: #22c55e;
-      margin-top: 10px;
-      text-align: center;
-    }
+.success {
+  color: #22c55e;
+  margin-top: 10px;
+  display: none;
+}
 
-    .data-card {
-      background: #1e293b;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 8px;
-    }
-  </style>
+.search-box {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.search-box input {
+  flex: 1;
+}
+
+.data-card {
+  background: #1e293b;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
-  <h2>🚀 Feedback Form</h2>
 
-  <div class="card">
-    <form id="feedback-form">
-      <input name="firstName" placeholder="First Name" required>
-      <input name="lastName" placeholder="Last Name">
+<h2>🚀 Feedback Form</h2>
 
-      <input name="email" type="email" placeholder="Email" required>
+<div class="card">
+<form id="feedback-form">
 
-      <select name="category">
-        <option value="">Select Category</option>
-        <option value="Support">Support</option>
-        <option value="Bug">Bug</option>
-      </select>
+<input name="firstName" placeholder="First Name" required>
+<input name="lastName" placeholder="Last Name">
+<input name="email" type="email" placeholder="Email" required>
 
-      <input name="rating" placeholder="Rating (1-5)">
-      <textarea name="feedback" placeholder="Your feedback"></textarea>
+<select name="category">
+  <option value="">Select Category</option>
+  <option value="Support">Support</option>
+  <option value="Bug">Bug</option>
+</select>
 
-      <button type="submit">Send Feedback 🚀</button>
-    </form>
+<input name="rating" placeholder="Rating (1-5)">
+<textarea name="feedback" placeholder="Your feedback"></textarea>
 
-    <div class="success" id="success-msg">
-      ✅ Submitted successfully!
-    </div>
-  </div>
+<button type="submit">Send Feedback 🚀</button>
 
-  <h3 style="margin-top:20px;">📊 Submitted Feedback</h3>
-  <div id="data-container"></div>
+</form>
+
+<div class="success" id="success-msg">✅ Submitted successfully!</div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-box">
+  <input id="searchName" placeholder="Search by First Name...">
+  <button onclick="searchUser()">Search 🔍</button>
+</div>
+
+<h3>📊 Submitted Feedback</h3>
+<div id="data-list"></div>
+
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyozsBeoYQ3YJM2iH6n3Eh3iac0dDTTPDmZHXUtQZuo9FOIPKnMG-wo-YaBmz5z5iC8/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyozsBeoYQ3YJM2iH6n3Eh3iac0dDTTPDmZHXUtQZuo9FOIPKnMG-wo-YaBmz5z5iC8/exec";
 
 const form = document.getElementById("feedback-form");
 const successMsg = document.getElementById("success-msg");
-const container = document.getElementById("data-container");
 
-// 🔥 SUBMIT FORM
+// SUBMIT FORM
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -117,47 +129,79 @@ form.addEventListener("submit", async (e) => {
   const payload = Object.fromEntries(formData.entries());
 
   try {
-    await fetch(SCRIPT_URL, {
+    await fetch(API_URL, {
       method: "POST",
       body: JSON.stringify(payload),
     });
 
     successMsg.style.display = "block";
     form.reset();
-
-    loadData(); // refresh data
+    loadData();
 
   } catch (err) {
-    alert("Error ❌");
     console.error(err);
+    alert("Error submitting ❌");
   }
 });
 
-// 🔥 LOAD DATA FROM SHEET
+// LOAD ALL DATA
 async function loadData() {
   try {
-    const res = await fetch(SCRIPT_URL);
+    const res = await fetch(API_URL);
     const data = await res.json();
 
-    container.innerHTML = "";
-
-    data.reverse().forEach(item => {
-      container.innerHTML += `
-        <div class="data-card">
-          <strong>${item.firstName || ""} ${item.lastName || ""}</strong><br>
-          📧 ${item.email || ""}<br>
-          ⭐ ${item.rating || ""}<br>
-          💬 ${item.feedback || ""}
-        </div>
-      `;
-    });
+    displayData(data.reverse());
 
   } catch (err) {
     console.error(err);
   }
 }
 
-// 🚀 LOAD ON START
+// SEARCH USER
+async function searchUser() {
+  const name = document.getElementById("searchName").value.toLowerCase();
+
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+
+    const filtered = data.filter(item =>
+      item.firstName.toLowerCase().includes(name)
+    );
+
+    if (filtered.length === 0) {
+      document.getElementById("data-list").innerHTML = "❌ No user found";
+      return;
+    }
+
+    displayData(filtered);
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// DISPLAY FUNCTION
+function displayData(data) {
+  const container = document.getElementById("data-list");
+  container.innerHTML = "";
+
+  data.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "data-card";
+
+    div.innerHTML = `
+      <strong>${item.firstName} ${item.lastName}</strong><br>
+      📧 ${item.email}<br>
+      🏷 ${item.category} | ⭐ ${item.rating}<br>
+      💬 ${item.feedback}
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+// LOAD DATA ON START
 loadData();
 </script>
 
