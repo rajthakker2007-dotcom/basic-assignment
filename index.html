@@ -63,35 +63,41 @@ button:hover {
   width: 100%;
 }
 
+/* 🚀 FIXED INPUT */
 .search-box input {
-  flex: 1;
+  flex: 1;              /* 🔥 THIS WAS MISSING */
+  width: 100%;          /* 🔥 force full width */
   padding: 14px;
   font-size: 16px;
   border-radius: 10px;
   border: none;
-  background: #000000;
-  color: #000;
-  min-width: 0; /* 🔥 important fix */
+
+  background: #ffffff;  /* ✅ WHITE BG */
+  color: #000;          /* ✅ BLACK TEXT */
+
+  min-width: 200px;     /* 🔥 prevent collapse */
 }
 
+/* placeholder */
 .search-box input::placeholder {
-  color: #555;
+  color: #666;
 }
 
+/* button */
 .search-box button {
-  padding: 14px 18px;
+  padding: 14px 20px;
   font-size: 16px;
   border-radius: 10px;
   border: none;
   background: #22c55e;
   color: white;
   cursor: pointer;
-  white-space: nowrap;
 }
 
+/* focus */
 .search-box input:focus {
-  box-shadow: 0 0 0 2px #22c55e;
   outline: none;
+  box-shadow: 0 0 0 2px #22c55e;
 }
 .data-card {
   background: #1e293b;
@@ -134,7 +140,7 @@ button:hover {
 <!-- SEARCH -->
 
 <div class="search-box">
-  <input type="text" id="searchName" placeholder="Enter first name 🔍" />
+  <input type="text" id="searchName" placeholder="Search by name..." />
   <button onclick="searchUser()">Search 🔍</button>
 </div>
 
