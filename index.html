@@ -37,13 +37,16 @@ input, select, textarea {
 }
 
 button {
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  background: #22c55e;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #22c55e;
+}
+
+button:active {
+  transform: scale(0.95);
 }
 
 /* SEARCH */
